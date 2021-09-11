@@ -38,7 +38,7 @@ if (isset($_GET['id'])) {
             <legend class="page-add__small-title custom-form__title">Фотография товара</legend>
             <ul class="add-list">
                 <div class="product__image">
-                    <img id="photo" src="<?= $product['photo'] ?? '' ?>" alt="product-name">
+                    <img id="photo" class="product__image" src="<?= $product['photo'] ?? '' ?>" alt="product-name">
                 </div>
                 <li class="add-list__item add-list__item--add">
                     <label for="product-photo"><?= isset($product['photo']) ? 'Изменить' : 'Добавить' ?> фотографию</label> <br>
@@ -70,6 +70,7 @@ if (isset($_GET['id'])) {
     <section class="shop-page__popup-end page-add__popup-end" hidden="">
         <div class="shop-page__wrapper shop-page__wrapper--popup-end">
             <h2 class="h h--1 h--icon shop-page__end-title">Товар успешно добавлен/изменен</h2>
+            <a href="/admin/admin.php">Вернуться обратно к списку товаров</a>
         </div>
     </section>
 </main>

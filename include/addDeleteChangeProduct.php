@@ -1,7 +1,7 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/include/func.php';
-$error = [];
-if (isset($_POST)) {
+
+if (isset($_POST['name']) && !empty($_POST['name'])) {
     $product = [];
     $product['id'] = isset($_POST['ID']) ? (int)htmlspecialchars(trim($_POST['ID'])) : null;
     $product['name'] = isset($_POST['name']) ? htmlspecialchars(trim($_POST['name'])) : null;
@@ -12,15 +12,21 @@ if (isset($_POST)) {
     $product['sale'] = (int)(bool)(isset($_POST['sale']) ? htmlspecialchars(trim($_POST['sale'])) : 0);
 }
 
-if(isset($_FILES['photo']) && chekFileError($_FILES['photo']) && is_uploaded_file($_FILES['photo']['tmp_name'])) {
+if(isset($_FILES['photo']) && is_uploaded_file($_FILES['photo']['tmp_name']) && chekFileError($_FILES['photo'])) {
     $fileName = getNameFile();
-    $path = '/img/products/' . $fileName;
-    if (move_uploaded_file($_FILES['photo']['tmp_name'], $path)) {
+    $path = $_SERVER['DOCUMENT_ROOT'] . '/img/products/';
+    if (move_uploaded_file($_FILES['photo']['tmp_name'], $path . $fileName)) {
         echo 'Файл успешно загружен';
-        $product['photo'] = basename($path);
+        $product['photo'] = '/img/products/' . $fileName;
     } else {
         echo 'Ошибка загрузки файла';
     }
+}
+
+if (isset($_POST['idDelete']) && !empty($_POST['idDelete'])) {
+    $id = (int)$_POST['idDelete'];
+    $product = getProductById($id);
+    var_dump($product);
 }
 $result = updateProduct($product);
 var_dump($result);

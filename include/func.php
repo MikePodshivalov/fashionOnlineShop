@@ -44,7 +44,7 @@ function getUserByLogin(string $login)
  * @param mixed $id
  * @return mixed
  */
-function getProductById(mixed $id)
+function getProductById(mixed $id): mixed
 {
     if ($id == null) {
         return false;
@@ -182,7 +182,7 @@ function chekFileError(array $file): bool
         };
         return false;
     }
-    if (!in_array((string)$file['type'], ['image/jpeg', 'image/png', 'image/gif', 'image/jpg'])) {
+    if (!in_array((string)$file['type'], ['image/jpeg', 'image/jpg'])) {
         echo 'Файл не является изображением';
         return false;
     }

@@ -37,6 +37,27 @@ $(document).ready(function (){
             if (xhr.readyState === 4 && xhr.status === 200) {
                 const resultText = xhr.responseText;
                 console.log(resultText);
+                $('section').prop('hidden', null);
+                $('form').remove();
+            }
+        };
+        xhr.send(formData);
+    })
+})
+
+$(document).ready(function (){
+    $('#product-item__delete').on('click', function (event) {
+        event.preventDefault();
+        let idDelete = $('#product-item__delete').val();
+        let formData = new FormData();
+        formData.append('idDelete', idDelete);
+        let xhr = new XMLHttpRequest();
+        xhr.open("POST", "/include/addDeleteChangeProduct.php");
+        console.log(formData);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                const resultText = xhr.responseText;
+                console.log(resultText);
             }
         };
         xhr.send(formData);

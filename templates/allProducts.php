@@ -8,6 +8,9 @@ $products = getProducts($start, $count);
 
 
 ?>
+<script src="../js/jquery-3.6.0.js"></script>
+<script src="../js/myScript.js"></script>
+<script src="../js/scripts.js"></script>
 <main class="page-products">
 <h1 class="h h--1">Товары</h1>
 <a class="page-products__button button" href="/include/add.php?mode=add">Добавить товар</a>
@@ -27,7 +30,7 @@ $products = getProducts($start, $count);
       <span class="product-item__field"><?= $product['section'] ?></span>
       <span class="product-item__field"><?= $product['new'] ? "да" : "нет" ?></span>
       <a href="/include/add.php/?mode=edit&id=<?= $product['id'] ?>" class="product-item__edit" aria-label="Редактировать"></a>
-      <button class="product-item__delete"></button>
+      <button class="product-item__delete" name="delete" value="<?= $product['id'] ?>"></button>
     </li>
   </ul>
 <?php endforeach; ?>
