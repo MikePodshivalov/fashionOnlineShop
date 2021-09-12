@@ -72,7 +72,8 @@ function getResultBySql(object $db, string $sql, mixed $something): mixed
 /**
  * Функция определяет авторизован ли пользователь и если нет, то отправляет пользователя на страницу авторизации
  */
-function authError () : void {
+function authError () : void
+{
     if (!isset($_SESSION['isLogged']) || !$_SESSION['isLogged']) {
         header("Location: /admin/index.php");
         exit();
@@ -80,12 +81,13 @@ function authError () : void {
 }
 
 /**
- * Функция возвращает весь список продуктов
+ * Функция возвращает весь список продуктов для одной страницы
  * @return array|false
  * @param $start
  * @param $end
  */
-function getProducts ($start, $end) : array|false {
+function getProducts ($start, $end) : array|false
+{
     $db = connect(); //подключаемся к БД
     $sql = "SELECT * FROM products LIMIT " . $start . ", " . $end;
     $result = $db->prepare($sql);
@@ -93,19 +95,21 @@ function getProducts ($start, $end) : array|false {
     return $result->fetchAll();
 }
 
-function getIdLastProduct () {
+function getCountProduct (): int
+{
     $db = connect(); //подключаемся к БД
-    $sql = "SELECT MAX(id) AS id FROM products";
+    $sql = "SELECT COUNT(*) FROM products";
     $result = $db->prepare($sql);
     $result->execute();
-    return $result->fetch()['id'];
+    return (int)($result->fetch()[0]);
 }
 /**
  * Функция возвращает количество страниц для пагинации
  * @param int $numProduct
  * @return int
  */
-function getNumPagination (int $numProduct) : int {
+function getNumPagination (int $numProduct) : int
+{
     if ($numProduct <= 9) {
         return 1;
     } elseif ($numProduct % 9 === 0) {
@@ -124,7 +128,7 @@ function checkSection(mixed $section, string $value): ?string
     }
 }
 
-function updateProduct(array $product) : mixed
+function updateProduct(array|int $product) : string
 {
     $db = connect();
     if ($product['id'] == null) {
@@ -191,5 +195,13 @@ function chekFileError(array $file): bool
         return false;
     }
     return true;
+}
+
+function deleteProductFromDb(int $id): string
+{
+    $db = connect();
+    $sql = "DELETE FROM products WHERE id = :id";
+    $result = $db->prepare($sql);
+    return $result->execute([':id' => $id]);
 }
 

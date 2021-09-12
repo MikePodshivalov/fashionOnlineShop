@@ -299,7 +299,7 @@ if (productsList) {
 
     if (target.classList && target.classList.contains('product-item__delete')) {
 
-      productsList.removeChild(target.parentElement);
+      productsList.setAttribute('hidden', 'true');
 
     }
 
@@ -330,4 +330,5 @@ if (document.querySelector('.shop-page')) {
   });
 
 }
+
 

@@ -8,9 +8,6 @@ $products = getProducts($start, $count);
 
 
 ?>
-<script src="../js/jquery-3.6.0.js"></script>
-<script src="../js/myScript.js"></script>
-<script src="../js/scripts.js"></script>
 <main class="page-products">
 <h1 class="h h--1">Товары</h1>
 <a class="page-products__button button" href="/include/add.php?mode=add">Добавить товар</a>
@@ -23,9 +20,9 @@ $products = getProducts($start, $count);
 </div>
 <?php foreach ($products as $product): ?>
     <ul class="page-products__list">
-    <li class="product-item page-products__item">
+    <li class="product-item page-products__item" id="<?= $product['id'] ?>">
       <b class="product-item__name"><?= $product['name'] ?></b>
-      <span class="product-item__field"><?= $product['id'] ?></span>
+      <span class="product-item__field product-item__id"><?= $product['id'] ?></span>
       <span class="product-item__field"> <?= $product['price'] ?></span>
       <span class="product-item__field"><?= $product['section'] ?></span>
       <span class="product-item__field"><?= $product['new'] ? "да" : "нет" ?></span>

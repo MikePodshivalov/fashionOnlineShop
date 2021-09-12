@@ -10,7 +10,7 @@
 //         let id = $('#ID').val();
 //         $.ajax({
 //             method: 'POST',
-//             url: '/include/addDeleteChangeProduct.php',
+//             url: '/include/addChangeProduct.php',
 //             data: {ID: id, name: name, price: price, photo: photo, select: select, new: newest, sale: sale}
 //         })
 //             .done(function (msg){
@@ -31,7 +31,7 @@ $(document).ready(function (){
         formData.append('ID', id);
         formData.append('photo', photo);
         let xhr = new XMLHttpRequest();
-        xhr.open("POST", "/include/addDeleteChangeProduct.php");
+        xhr.open("POST", "/include/addChangeProduct.php");
         xhr.responseType = "text";
         xhr.onreadystatechange = function() {
             if (xhr.readyState === 4 && xhr.status === 200) {
@@ -45,21 +45,21 @@ $(document).ready(function (){
     })
 })
 
-$(document).ready(function (){
-    $('#product-item__delete').on('click', function (event) {
-        event.preventDefault();
-        let idDelete = $('#product-item__delete').val();
-        let formData = new FormData();
-        formData.append('idDelete', idDelete);
-        let xhr = new XMLHttpRequest();
-        xhr.open("POST", "/include/addDeleteChangeProduct.php");
-        console.log(formData);
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState === 4 && xhr.status === 200) {
-                const resultText = xhr.responseText;
-                console.log(resultText);
-            }
-        };
-        xhr.send(formData);
-    })
+$('.product-item__delete').click(function (event) {
+    event.preventDefault();
+    const idDelete = $(this).siblings('.product-item__id').text();
+    let formData = new FormData();
+    formData.append('ID', idDelete);
+    let xhr = new XMLHttpRequest();
+    xhr.open("POST", "/include/deleteProduct.php");
+    xhr.responseType = "text";
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            const resultText = xhr.responseText;
+            alert("Товар с id=" + resultText + " успешно удален из базы данных");
+            $('#' + idDelete).remove();
+        }
+    };
+    xhr.send(formData);
+
 })

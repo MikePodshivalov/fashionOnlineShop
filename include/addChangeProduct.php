@@ -23,10 +23,5 @@ if(isset($_FILES['photo']) && is_uploaded_file($_FILES['photo']['tmp_name']) && 
     }
 }
 
-if (isset($_POST['idDelete']) && !empty($_POST['idDelete'])) {
-    $id = (int)$_POST['idDelete'];
-    $product = getProductById($id);
-    var_dump($product);
-}
 $result = updateProduct($product);
 var_dump($result);
