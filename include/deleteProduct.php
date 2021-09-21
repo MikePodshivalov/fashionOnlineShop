@@ -12,9 +12,9 @@ if (!isset($_COOKIE['login']) || $_COOKIE['login'] != $adminLogin) {
 if (isset($_POST['ID']) && !empty($_POST['ID'])) {
     $id = (int)$_POST['ID'];
     if (deleteProductFromDb($id)) {
-        echo $id;
+        echo "Товар с id=" . $id . " успешно удален из базы данных";
     } else {
-        echo 'error';
+        echo "error deleting";
     }
 }
 

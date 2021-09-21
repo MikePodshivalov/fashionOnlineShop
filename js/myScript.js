@@ -1,33 +1,11 @@
-// $(document).ready(function (){
-//     $('#changeProduct').on('click', function (event) {
-//         event.preventDefault();
-//         let name = $('input[name="name"]').val();
-//         let price = $('input[name="price"]').val();
-//         let photo = $('img[src]').attr('src');
-//         let select = $('select').val();
-//         let newest = $('#new').prop('checked');
-//         let sale = $('#sale').prop('checked');
-//         let id = $('#ID').val();
-//         $.ajax({
-//             method: 'POST',
-//             url: '/include/addChangeProduct.php',
-//             data: {ID: id, name: name, price: price, photo: photo, select: select, new: newest, sale: sale}
-//         })
-//             .done(function (msg){
-//                 alert(msg);
-//                 $('section').prop('hidden', null);
-//                 $('form').remove();
-//             });
-//     })
-// })
 
 $(document).ready(function (){
     $('#changeProduct').on('click', function (event) {
         event.preventDefault();
-        let id = $('#ID').val();
-        let photo = $('img[src]').attr('src');
-        let form = document.querySelector("#change-add-product");
-        let formData = new FormData(form);
+        let id = $('#ID').val(),
+            photo = $('img[src]').attr('src'),
+            form = document.querySelector("#change-add-product"),
+            formData = new FormData(form);
         formData.append('ID', id);
         formData.append('photo', photo);
         let xhr = new XMLHttpRequest();
@@ -36,9 +14,12 @@ $(document).ready(function (){
         xhr.onreadystatechange = function() {
             if (xhr.readyState === 4 && xhr.status === 200) {
                 const resultText = xhr.responseText;
-                console.log(resultText);
-                $('section').prop('hidden', null);
-                $('form').remove();
+                if (resultText == 1) {
+                    $('section').prop('hidden', null);
+                    $('form').remove();
+                } else {
+                    alert(resultText);
+                }
             }
         };
         xhr.send(formData);
@@ -56,10 +37,44 @@ $('.product-item__delete').click(function (event) {
     xhr.onreadystatechange = function() {
         if (xhr.readyState === 4 && xhr.status === 200) {
             const resultText = xhr.responseText;
-            alert("Товар с id=" + resultText + " успешно удален из базы данных");
-            $('#' + idDelete).remove();
+            alert(resultText);
+            if (!(resultText === "error deleting")) {
+                $('#' + idDelete).remove();
+            }
         }
     };
     xhr.send(formData);
+})
 
+document.addEventListener('DOMContentLoaded',function (){
+    let links = document.querySelectorAll('a.filter__list-item');
+    links.forEach(function (link) {
+        link.addEventListener("click", function (event){
+            event.preventDefault();
+            link.classList.add('active');
+        })
+    })
+
+    document.querySelector("#button_filter").addEventListener("click",function (event) {
+        event.preventDefault();
+        const url = '/include/products.php';
+        let form = document.querySelector('#filter'),
+            min = document.querySelector('.min-price').textContent,
+            max = document.querySelector('.max-price').textContent,
+            category = document.querySelector('a.filter__list-item.active').id,
+            products = document.querySelector('#products'),
+            formData = new FormData(form);
+        formData.append('min', min);
+        formData.append('max', max);
+        formData.append('category', category);
+        let xhr = new XMLHttpRequest();
+        xhr.open("POST", url);
+        xhr.responseType = "text";
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                products.innerHTML = xhr.response;
+            }
+        };
+        xhr.send(formData);
+    })
 })

@@ -148,8 +148,7 @@ function updateProduct(array|int $product) : string
         ':sale' => $product['sale'],
         ':id' => $product['id']
     ];
-    $result->execute($task);
-    return "Успешное изменение/добавление продукта";
+    return $result->execute($task);
 }
 
 /**
@@ -205,3 +204,42 @@ function deleteProductFromDb(int $id): string
     return $result->execute([':id' => $id]);
 }
 
+function getAllProductsThroughFilter (array $filter) : array|false
+{
+    $db = connect();
+    if ($filter['cat'] === 'all') {
+        $sql = "SELECT * FROM products WHERE (price > :minimal AND price < :maximum AND `sale`=:sale AND `new`=:newest)";
+        $task = [
+            ':minimal' => (int)$filter['min'],
+            ':maximum' => (int)$filter['max'],
+            ':sale' => (int)$filter['sale'],
+            ':newest' => (int)$filter['new'],
+        ];
+    } else {
+        $sql = "SELECT * FROM products WHERE (price > :minimal AND price < :maximum AND `section`=:sec AND `sale`=:sale AND `new`=:newest)";
+        $task = [
+            ':minimal' => (int)$filter['min'],
+            ':maximum' => (int)$filter['max'],
+            ':sec' => $filter['cat'],
+            ':sale' => (int)$filter['sale'],
+            ':newest' => (int)$filter['new'],
+        ];
+    }
+
+    $result = $db->prepare($sql);
+    $result->execute($task);
+    return $result->fetchAll();
+}
+
+function getProductsPagination(array $products, int $start, int $end) : array
+{
+    if (count($products) < 9) {
+        return $products;
+    } else {
+        $result = [];
+        for ($i = $start; $i < $end; $i++) {
+            $result[] = $products[$i];
+        }
+        return $result;
+    }
+}

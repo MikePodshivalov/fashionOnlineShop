@@ -1,7 +1,9 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/include/func.php';
 
-if (isset($_POST['name']) && !empty($_POST['name'])) {
+$errors = [];
+
+if (isset($_POST) && !empty($_POST)) {
     $product = [];
     $product['id'] = isset($_POST['ID']) ? (int)htmlspecialchars(trim($_POST['ID'])) : null;
     $product['name'] = isset($_POST['name']) ? htmlspecialchars(trim($_POST['name'])) : null;
@@ -10,18 +12,30 @@ if (isset($_POST['name']) && !empty($_POST['name'])) {
     $product['select'] = isset($_POST['category']) ? htmlspecialchars(trim($_POST['category'])) : null;
     $product['new'] = (int)(bool)(isset($_POST['new']) ? htmlspecialchars(trim($_POST['new'])) : 0);
     $product['sale'] = (int)(bool)(isset($_POST['sale']) ? htmlspecialchars(trim($_POST['sale'])) : 0);
+    if ($product['name'] == null || $product['price'] == null || $product['select'] == null) {
+        $errors[] = "Не заполнены имя или цена или категория товара";
+    }
+} else {
+    $errors[] = "Данные не получены через метод POST, возможно некорректный файл";
 }
 
 if(isset($_FILES['photo']) && is_uploaded_file($_FILES['photo']['tmp_name']) && chekFileError($_FILES['photo'])) {
     $fileName = getNameFile();
     $path = $_SERVER['DOCUMENT_ROOT'] . '/img/products/';
     if (move_uploaded_file($_FILES['photo']['tmp_name'], $path . $fileName)) {
-        echo 'Файл успешно загружен';
         $product['photo'] = '/img/products/' . $fileName;
     } else {
-        echo 'Ошибка загрузки файла';
+        $errors[] = 'Ошибка загрузки файла';
     }
+} elseif (isset($_FILES['photo']) && empty($_FILES['photo'])) {
+    $errors[] = 'Ошибка загрузки файла';
 }
 
-$result = updateProduct($product);
-var_dump($result);
+if (count($errors) == 0) {
+    $result = updateProduct($product);
+    echo $result;
+} else {
+    foreach ($errors as $error) {
+        echo $error  . PHP_EOL;
+    }
+}

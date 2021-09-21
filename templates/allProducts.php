@@ -1,6 +1,6 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/include/func.php';
-$maxId = getIdLastProduct();
+$maxId = getCountProduct();
 $maxPages = getNumPagination($maxId);
 $page = $_GET['page'] ?? "1";
 $start = $count * ($page - 1);

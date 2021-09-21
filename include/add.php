@@ -28,11 +28,11 @@ if (isset($_GET['id'])) {
                 <p class="custom-form__input-label">
                     Название товара
                 </p>
-                <input type="text" class="custom-form__input afterClear" id="productName" name="name" value="<?= $product['name'] ?? '' ?>" id="product-name">
+                <input type="text" class="custom-form__input afterClear" id="productName" name="name" value="<?= $product['name'] ?? '' ?>" id="product-name" required>
                 <p class="custom-form__input-label">
                     Цена товара
                 </p>
-                <input type="text" class="custom-form__input afterClear" name="price" value="<?= $product['price'] ?? '' ?>" id="product-price">
+                <input type="text" class="custom-form__input afterClear" name="price" value="<?= $product['price'] ?? '' ?>" id="product-price" required>
         </fieldset>
         <fieldset class="page-add__group custom-form__group">
             <legend class="page-add__small-title custom-form__title">Фотография товара</legend>
@@ -50,7 +50,7 @@ if (isset($_GET['id'])) {
         <fieldset class="page-add__group custom-form__group">
             <legend class="page-add__small-title custom-form__title">Раздел</legend>
             <div class="page-add__select">
-                <select name="category" class="custom-form__select afterClear" >
+                <select name="category" class="custom-form__select afterClear" required>
                     <option <?= $product['section'] ? "hidden=''" : '' ?>>Название раздела</option>
                     <option value="female" <?= checkSection($product['section'], "female") ?>>Женщины</option>
                     <option value="male" <?= checkSection($product['section'], "male") ?>>Мужчины</option>
