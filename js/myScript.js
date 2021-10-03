@@ -54,27 +54,28 @@ document.addEventListener('DOMContentLoaded',function (){
             link.classList.add('active');
         })
     })
-
-    document.querySelector("#button_filter").addEventListener("click",function (event) {
-        event.preventDefault();
-        const url = '/include/products.php';
-        let form = document.querySelector('#filter'),
-            min = document.querySelector('.min-price').textContent,
-            max = document.querySelector('.max-price').textContent,
-            category = document.querySelector('a.filter__list-item.active').id,
-            products = document.querySelector('#products'),
-            formData = new FormData(form);
-        formData.append('min', min);
-        formData.append('max', max);
-        formData.append('category', category);
-        let xhr = new XMLHttpRequest();
-        xhr.open("POST", url);
-        xhr.responseType = "text";
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState === 4 && xhr.status === 200) {
-                products.innerHTML = xhr.response;
-            }
-        };
-        xhr.send(formData);
-    })
 })
+
+document.querySelector('#button_filter').addEventListener("click",function (event) {
+    event.preventDefault();
+    const url = '/include/products.php';
+    let form = document.querySelector('#filter'),
+        min = document.querySelector('.min-price').textContent,
+        max = document.querySelector('.max-price').textContent,
+        category = document.querySelector('a.filter__list-item.active').id,
+        products = document.querySelector('#products'),
+        formData = new FormData(form);
+    formData.append('min', min);
+    formData.append('max', max);
+    formData.append('category', category);
+    let xhr = new XMLHttpRequest();
+    xhr.open("POST", url);
+    xhr.responseType = "text";
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            products.innerHTML = xhr.response;
+        }
+    };
+    xhr.send(formData);
+})
+
